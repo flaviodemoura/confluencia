@@ -63,5 +63,140 @@ Qed.
 
 Theorem confl': forall t t1 t2, t -->** t1 /\ t -->** t2 -> exists t3, t1 -->** t3 /\ t2 -->** t3.
 Proof.
-  
+  Admitted.
+
+Theorem id_p: forall P, P -> P.
+Proof.
+  intros P.
+  intros P1.
+  assumption.
 Qed.
+
+Lemma id_PP: forall P, (P -> P) -> (P -> P).
+Proof.
+  intros P p1 p2.
+  assumption.
+Qed.
+
+Lemma imp_trans: forall P Q R, (P -> Q) -> (Q -> R) -> P -> R.
+Proof.
+  intros P.
+  intros Q.
+  intros R.
+  intros func1.
+  intros func2.
+  intros Papp.
+  pose (Qapp := func1 Papp).
+  pose (Rapp := func2 Qapp).
+  assumption.
+Qed.
+
+Lemma imp_trans_ref: forall P Q R, (P -> Q) -> (Q -> R) -> P -> R.
+Proof.
+  intros P.
+  intros Q.
+  intros R.
+  intros func1.
+  intros func2.
+  intros Papp.
+  refine (func2 _).
+  refine (func1 _).
+  assumption.
+Qed.
+
+Lemma imp_perm : forall P Q R, (P -> Q -> R) -> (Q -> P -> R).
+Proof.
+  intros P Q R.
+  intros func1.
+  intros Qapp.
+  intros Papp.
+  pose (QRapp := func1 Papp).
+  pose (Rapp := QRapp Qapp).
+  assumption.
+Qed.
+
+Lemma ignore_Q : forall P Q R, (P -> R) -> P -> Q -> R.
+Proof.
+  intros P Q R.
+  intros func1.
+  intros Papp.
+  intros Qapp.
+  pose (Rapp := func1 Papp).
+  assumption.
+Qed.
+
+Lemma ignore_Q_without_parenthesis : forall P Q R, P -> R -> P -> Q -> R.
+Proof.
+  intros P Q R.
+  intros Papp Rapp Papp2 Qapp1.
+  assumption.
+Qed.
+
+Lemma delta_imp : forall P Q, (P -> P -> Q) -> P -> Q.
+Proof.
+  intros P Q.
+  intros func1.
+  intros Papp.
+  pose (PQapp := func1 Papp).
+  pose (Qapp := PQapp Papp).
+  assumption.
+Qed.
+
+Lemma delta_impR : forall P Q, (P->Q)->(P->P->Q).
+Proof.
+  intros P Q.
+  intros func1.
+  intros Papp.
+  intros Papp2.
+  pose (Qapp := func1 Papp).
+  assumption.
+Qed.
+
+Lemma diamond : forall P Q R T, (P->Q)->(P->R)->(Q->R->T)->P->T.
+Proof.
+  intros P Q R T.
+  intros func1.
+  intros func2.
+  intros func3.
+  intros Papp.
+  pose (Qapp := func1 Papp).
+  pose (Rapp := func2 Papp).
+  pose (RTapp := func3 Qapp).
+  pose (Tapp := RTapp Rapp).
+  assumption.
+Qed.
+
+Lemma weak_peirce : forall P Q, ((((P->Q)->P)->P)->Q)->Q.
+Proof.
+  intros P Q.
+  intros func1.
+Qed.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
